@@ -72,5 +72,36 @@ public class IPLMain {
 
     }
 
+    public static void numberOfMatchesWonAllTeamInIpl(String file) {
+
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            Map<String, Integer> wonMatchesInIpl = new HashMap<>();
+
+            reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] matchDetail = line.split(",");
+
+                if (!wonMatchesInIpl.containsKey(matchDetail[10]))
+                    wonMatchesInIpl.put(matchDetail[10], 1);
+                else
+                    wonMatchesInIpl.put(matchDetail[10], wonMatchesInIpl.getOrDefault(matchDetail[10], 0) + 1);
+
+            }
+
+            for (Map.Entry<String, Integer> entry : wonMatchesInIpl.entrySet()) {
+                System.out.println(entry.getKey() + " won :" + entry.getValue() + " in Ipl.");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
 
 }
