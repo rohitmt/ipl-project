@@ -140,5 +140,14 @@ public class IPLMain {
         }
     }
 
+    static class EconomicalBowler{
+        long run;
+        long bowl;
+
+        EconomicalBowler(long run,long bowl){
+            this.run=run;
+            this.bowl=bowl;
+        }
+    }
 
 }
