@@ -102,6 +102,43 @@ public class IPLMain {
         }
     }
 
+    public static void getExtraRunPerTeamIn2016(String matches, String deliveries) {
+
+        try {
+            BufferedReader readerMatches = new BufferedReader(new FileReader(matches));
+
+            Map<String, Integer> getExtraRun = new HashMap<>();
+            String lineM = "";
+            String lineD = "";
+
+            readerMatches.readLine();
+
+            while ((lineM = readerMatches.readLine()) != null) {
+
+                String[] matchDetail = lineM.split(",");
+
+                if (matchDetail[1].equals("2016")) {
+                    BufferedReader readerDeliveries = new BufferedReader(new FileReader(deliveries));
+                    readerDeliveries.readLine();
+                    while ((lineD = readerDeliveries.readLine()) != null) {
+
+                        String[] deliveryDetail = lineD.split(",");
+                        if (matchDetail[0].equals(deliveryDetail[0])) {
+                            getExtraRun.put(deliveryDetail[2], getExtraRun.getOrDefault(deliveryDetail[2], 0) + Integer.parseInt(deliveryDetail[16]));
+                        }
+                    }
+                }
+
+            }
+
+            for (Map.Entry<String, Integer> entry : getExtraRun.entrySet()) {
+                System.out.println(entry.getKey() + " get extra run in 2016 is : " + entry.getValue());
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 
 }
