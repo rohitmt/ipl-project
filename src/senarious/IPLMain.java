@@ -13,6 +13,7 @@ public class IPLMain {
               System.out.println("2> Number of matches won of all teams over all the years of IPL.");
               System.out.println("3> Number of matches won of all teams over all the years of IPL.");
               System.out.println("4> For the year 2015 get the top economical bowlers.");
+              System.out.println("5> Exit from program");
 
                 int choice=scan.nextInt();
 
@@ -21,14 +22,16 @@ public class IPLMain {
                       IPLMain.numberOfMatchPerYear(matches);
                         break;
                   case 2:
-                    //  IPLMain.numberOfMatchesWonAllTeamInIpl(matches);
+                      IPLMain.numberOfMatchesWonAllTeamInIpl(matches);
                         break;
                   case 3:
-                    //  IPLMain.getExtraRunPerTeamIn2016(matches,deliveries);
+                      IPLMain.getExtraRunPerTeamIn2016(matches,deliveries);
                        break;
                   case 4:
-                     // IPLMain.findEconomicalBowler(matches,deliveries);
+                      IPLMain.findEconomicalBowler(matches,deliveries);
                       break;
+                  case 5:
+                           System.exit(0);
                   default:
                         System.out.println("Invalid option");
 
@@ -148,6 +151,66 @@ public class IPLMain {
             this.run=run;
             this.bowl=bowl;
         }
+    }
+
+
+
+    public static void findEconomicalBowler(String matches,String deliveries){
+
+        try{
+            BufferedReader readerMatches = new BufferedReader(new FileReader(matches));
+            Map<String,EconomicalBowler>  bowler=new HashMap<>();
+            String lineMatches="";
+            readerMatches.readLine();
+
+            while((lineMatches= readerMatches.readLine())!=null) {
+
+                String matchDetails[]=lineMatches.split(",");
+
+                if(matchDetails[1].equals("2015")) {
+
+                    BufferedReader readerDeliveries = new BufferedReader(new FileReader(deliveries));
+                    String lineDeliveries = "";
+
+                    while ((lineDeliveries = readerDeliveries.readLine()) != null) {
+
+                        String[] deliveriesDetails = lineDeliveries.split(",");
+
+                        if(matchDetails[0].equals(deliveriesDetails[0])) {
+
+                            if (!bowler.containsKey(deliveriesDetails[8])) {
+                                bowler.put(deliveriesDetails[8], new EconomicalBowler(Integer.parseInt(deliveriesDetails[17]), 1));
+                            } else {
+                                EconomicalBowler eb = bowler.get(deliveriesDetails[8]);
+                                eb.bowl += 1;
+                                eb.run += Integer.parseInt(deliveriesDetails[17]);
+                                bowler.put(deliveriesDetails[8], eb);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            String bowlerName="";
+            double rate=Double.MAX_VALUE;
+
+            for(Map.Entry<String, EconomicalBowler> entry: bowler.entrySet()){
+                EconomicalBowler eb= entry.getValue();
+                int runs=(int)eb.run;
+                double over=(double)eb.bowl/6;
+                if((double)runs/over<rate){
+                    bowlerName= entry.getKey();
+                }
+
+            }
+
+            System.out.println("Economical Bowler is :"+bowlerName+" in 2015.");
+
+        }catch(Exception e){
+                System.out.println(e);
+        }
+
     }
 
 }
